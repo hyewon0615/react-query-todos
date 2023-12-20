@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useQueryClient } from "react-query";
+import { QUERY_KEYS } from "../../../hook/keys.constant";
 import { useAddMutation } from "../../../hook/useTodosQuery";
 import HeightBox from "../common/HeightBox";
 import LabledInput from "../common/LabledInput";
@@ -71,7 +72,7 @@ function Input() {
     mutate(newTodo, {
       onSuccess: (data) => {
         console.log("data", data);
-        queryClient.invalidateQueries("todos");
+        queryClient.invalidateQueries(QUERY_KEYS.TODOS);
       },
     });
 

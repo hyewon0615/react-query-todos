@@ -2,6 +2,7 @@ import React from "react";
 import { useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { getTodos } from "../../../api/todos";
+import { QUERY_KEYS } from "../../../hook/keys.constant";
 import {
   useRemoveMutation,
   useSwitchMutation,
@@ -16,7 +17,6 @@ import {
   StyledTitle,
   TodoButton,
 } from "./styles";
-
 /**
  * 컴포넌트 개요 : 메인 > TODOLIST > TODO. 할 일의 단위 컴포넌트
  * 2022.12.16 : 최초 작성
@@ -44,7 +44,7 @@ function Todo({ todo, isActive }) {
     //왜안돼~!~!
     switchMutation.mutate(payload, {
       onSuccess: () => {
-        queryClient.invalidateQueries("todos");
+        queryClient.invalidateQueries(QUERY_KEYS.TODOS);
       },
     });
   };
@@ -53,7 +53,7 @@ function Todo({ todo, isActive }) {
   const handleRemoveButton = () => {
     removeMutation.mutate(todo.id, {
       onSuccess: () => {
-        queryClient.invalidateQueries("todos");
+        queryClient.invalidateQueries(QUERY_KEYS.TODOS);
       },
     });
   };
@@ -63,7 +63,9 @@ function Todo({ todo, isActive }) {
     navigate(`/${todo.id}`);
   };
   const onMousehandler = () => {
-    queryClient.prefetchQuery(["todos", todo.id], () => getTodos(todo.id));
+    queryClient.prefetchQuery([QUERY_KEYS.TODOS, todo.id], () =>
+      getTodos(todo.id)
+    );
   };
   return (
     <StyledDiv>
